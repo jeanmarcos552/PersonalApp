@@ -1,35 +1,25 @@
 import {HStack, Input, theme, View} from 'native-base';
 import React, {useRef, useState} from 'react';
 import {Pressable, TextInput} from 'react-native';
+import {IItem} from '.';
 import {CheckboxApp} from '../Components/Inputs/Checkbox';
 import {TrashIcon} from '../Icons';
 
-type IItem = {
-  id?: number;
-  title?: string;
-  status?: boolean;
-  price?: number;
-};
-
 interface IListItem {
-  data: {
-    item: IItem;
-  };
+  item: IItem;
+  index?: number;
 }
 
-let count = 0;
-export const ListItem = ({data}: IListItem) => {
-  const [currentItem, setCurrentItem] = useState<IItem>(data?.item);
+export const ListItem = ({item}: IListItem) => {
+  const [currentItem, setCurrentItem] = useState<IItem>(item);
   const inputRef = useRef<TextInput>(null);
 
   if (Object.keys(currentItem).length === 0) {
     return <View />;
   }
 
-  count++;
   return (
     <HStack
-      backgroundColor={count % 2 === 0 ? 'gray.100' : 'gray.50'}
       w="100%"
       justifyContent="space-between"
       alignItems="center"
@@ -58,6 +48,7 @@ export const ListItem = ({data}: IListItem) => {
         defaultValue={String(currentItem?.price)}
         backgroundColor="gray.200"
       />
+
       <Pressable onPress={() => setCurrentItem({})}>
         <TrashIcon width={20} color={theme.colors.red[400]} />
       </Pressable>

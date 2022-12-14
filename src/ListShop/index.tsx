@@ -2,7 +2,6 @@ import React from 'react';
 import {
   AddIcon,
   Box,
-  Center,
   FlatList,
   HStack,
   Input,
@@ -11,6 +10,13 @@ import {
 } from 'native-base';
 import {useState} from 'react';
 import {ListItem} from './ListItem';
+
+export type IItem = {
+  id?: number;
+  title?: string;
+  status?: boolean;
+  price?: number;
+};
 
 export type IinstState = typeof instState;
 
@@ -71,7 +77,6 @@ function Header({addItem}: IHeader) {
 export const ListShop = () => {
   const [list, setList] = useState(instState);
   const toast = useToast();
-  console.log(list.length);
 
   const addItem = (title: string) => {
     if (title === '') {
@@ -94,16 +99,14 @@ export const ListShop = () => {
   };
 
   return (
-    <Center w="100%">
-      <Box p={4} w="100%">
-        <FlatList
-          height="full"
-          ListHeaderComponent={<Header addItem={addItem} />}
-          data={list}
-          keyExtractor={item => String(item.id)}
-          renderItem={(item: any) => <ListItem data={item} />}
-        />
-      </Box>
-    </Center>
+    <Box p={2} w="100%">
+      <FlatList
+        height="full"
+        ListHeaderComponent={<Header addItem={addItem} />}
+        data={list}
+        keyExtractor={item => String(item.id)}
+        renderItem={item => <ListItem {...item} />}
+      />
+    </Box>
   );
 };
