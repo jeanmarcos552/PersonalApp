@@ -1,11 +1,12 @@
 import React from 'react';
 import {
+  AddIcon,
   Box,
-  Button,
   Center,
   FlatList,
   HStack,
   Input,
+  Pressable,
   useToast,
 } from 'native-base';
 import {useState} from 'react';
@@ -54,15 +55,15 @@ function Header({addItem}: IHeader) {
         value={inputValue}
         placeholder="Add novo Item"
       />
-      <Button
-        borderRadius="sm"
-        variant="solid"
+
+      <Pressable
+        justifyContent="center"
         onPress={() => {
           addItem(inputValue);
           setInputValue('');
         }}>
-        Add
-      </Button>
+        <AddIcon width={20} />
+      </Pressable>
     </HStack>
   );
 }
@@ -70,6 +71,7 @@ function Header({addItem}: IHeader) {
 export const ListShop = () => {
   const [list, setList] = useState(instState);
   const toast = useToast();
+  console.log(list.length);
 
   const addItem = (title: string) => {
     if (title === '') {
@@ -78,13 +80,14 @@ export const ListShop = () => {
       });
       return;
     }
-
     setList((prevList: any) => {
       return [
         ...prevList,
         {
+          id: prevList.length + 1,
           title: title,
           status: false,
+          price: 0,
         },
       ];
     });
