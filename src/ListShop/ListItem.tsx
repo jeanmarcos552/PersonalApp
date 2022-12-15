@@ -3,6 +3,7 @@ import React, {useRef, useState} from 'react';
 import {Pressable, TextInput} from 'react-native';
 import {IItem} from '.';
 import {CheckboxApp} from '../Components/Inputs/Checkbox';
+import {useShopList} from '../hooks/listaShop';
 import {TrashIcon} from '../Icons';
 
 interface IListItem {
@@ -12,7 +13,10 @@ interface IListItem {
 
 export const ListItem = ({item}: IListItem) => {
   const [currentItem, setCurrentItem] = useState<IItem>(item);
+  const [inputValue, setInputValue] = useState(item.price);
+
   const inputRef = useRef<TextInput>(null);
+  const {sumItems} = useShopList();
 
   if (Object.keys(currentItem).length === 0) {
     return <View />;
@@ -38,6 +42,8 @@ export const ListItem = ({item}: IListItem) => {
       />
 
       <Input
+        onBlur={() => sumItems(Number(inputValue))}
+        onChangeText={text => setInputValue(Number(text))}
         borderWidth={0}
         ref={inputRef}
         width={10}

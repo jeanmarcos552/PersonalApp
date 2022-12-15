@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   AddIcon,
   Box,
@@ -6,10 +6,13 @@ import {
   HStack,
   Input,
   Pressable,
+  Text,
   useToast,
 } from 'native-base';
 import {useState} from 'react';
 import {ListItem} from './ListItem';
+import {View} from 'native-base';
+import {useShopList} from '../hooks/listaShop';
 
 export type IItem = {
   id?: number;
@@ -77,6 +80,21 @@ function Header({addItem}: IHeader) {
 export const ListShop = () => {
   const [list, setList] = useState(instState);
   const toast = useToast();
+  const {totalItems, sumItems} = useShopList();
+
+  const initListShop = useCallback(() => {
+    if (list && sumItems) {
+      const total = list.reduce(
+        (acumulador: number, value: any) => acumulador + value.price,
+        0,
+      );
+      sumItems(total);
+    }
+  }, [list, sumItems]);
+
+  useEffect(() => {
+    initListShop();
+  }, [initListShop]);
 
   const addItem = (title: string) => {
     if (title === '') {
@@ -106,6 +124,11 @@ export const ListShop = () => {
         data={list}
         keyExtractor={item => String(item.id)}
         renderItem={item => <ListItem {...item} />}
+        ListFooterComponent={
+          <View>
+            <Text>{totalItems}</Text>
+          </View>
+        }
       />
     </Box>
   );

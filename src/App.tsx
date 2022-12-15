@@ -2,6 +2,7 @@ import React from 'react';
 import {NativeBaseProvider, StatusBar} from 'native-base';
 import {ListShop} from './ListShop';
 import {customTheme} from './theme/default';
+import AppProvider from './hooks';
 
 export default function App() {
   return (
@@ -10,7 +11,9 @@ export default function App() {
         barStyle="light-content"
         backgroundColor={customTheme.colors.primary.default}
       />
-      <ListShop />
+      <AppProvider>
+        <ListShop />
+      </AppProvider>
     </NativeBaseProvider>
   );
 }
