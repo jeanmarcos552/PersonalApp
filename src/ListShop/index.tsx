@@ -13,6 +13,7 @@ import {useState} from 'react';
 import {ListItem} from './ListItem';
 import {View} from 'native-base';
 import {useShopList} from '../hooks/listaShop';
+import {SafeAreaView} from 'react-native';
 
 export type IItem = {
   id?: number;
@@ -117,19 +118,21 @@ export const ListShop = () => {
   };
 
   return (
-    <Box p={2} w="100%">
-      <FlatList
-        height="full"
-        ListHeaderComponent={<Header addItem={addItem} />}
-        data={list}
-        keyExtractor={item => String(item.id)}
-        renderItem={item => <ListItem {...item} />}
-        ListFooterComponent={
-          <View>
-            <Text>{totalItems}</Text>
-          </View>
-        }
-      />
-    </Box>
+    <SafeAreaView>
+      <Box p={2} w="100%">
+        <FlatList
+          height="full"
+          ListHeaderComponent={<Header addItem={addItem} />}
+          data={list}
+          keyExtractor={item => String(item.id)}
+          renderItem={item => <ListItem {...item} />}
+          ListFooterComponent={
+            <View>
+              <Text>{totalItems}</Text>
+            </View>
+          }
+        />
+      </Box>
+    </SafeAreaView>
   );
 };
